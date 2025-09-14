@@ -25,23 +25,36 @@ if os.name == "nt":
 
 def run_p(args, cwd=None, shell=False, **kwargs):
     """
-    Robust subprocess runner: always decode as UTF-8 and never crash on bad bytes.
-    Returns (ok, stdout, stderr).
+    Robust subprocess runner (Windows-safe):
+    - Always decodes as UTF-8 with error replacement.
+    - Never raises on missing executables or bad CWD; returns (ok, out, err).
     """
     env = kwargs.get("env")
     inp = kwargs.get("input")
-    p = subprocess.run(
-        args,
-        cwd=str(cwd) if cwd else None,
-        shell=shell,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        env=env,
-        input=inp,
-    )
-    return p.returncode == 0, (p.stdout or ""), (p.stderr or "")
+    cmd_display = args if isinstance(args, str) else " ".join(args)
+
+    try:
+        if cwd and not Path(cwd).exists():
+            return False, "", f"Working directory not found: {cwd}"
+
+        p = subprocess.run(
+            args,
+            cwd=str(cwd) if cwd else None,
+            shell=shell,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            env=env,
+            input=inp,
+        )
+        return p.returncode == 0, (p.stdout or ""), (p.stderr or "")
+    except FileNotFoundError as e:
+        # Most common cause: missing executable on PATH (e.g., git/npm/gh/gcloud/firebase)
+        return False, "", f"Executable not found while running: {cmd_display}\n{e}"
+    except Exception as e:
+        return False, "", f"Subprocess error while running: {cmd_display}\n{e}"
+
 
 def run_json(args, cwd=None, shell=False):
     ok, out, err = run_p(args, cwd=cwd, shell=shell)
