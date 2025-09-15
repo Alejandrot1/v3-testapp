@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 const severityBadge = (severity) => {
   const map = {
@@ -14,6 +15,7 @@ export default function Incidents() {
   const [incidents, setIncidents] = useState([]);
   const [status, setStatus] = useState('all');
   const [severity, setSeverity] = useState('all');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -32,6 +34,7 @@ export default function Incidents() {
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">Incidents</h1>
         <div className="flex items-center gap-2">
+          <Link to="/report" className="px-3 py-2 rounded-md bg-fire-red text-white text-sm">Report Incident</Link>
           <select className="border rounded-md px-2 py-1" value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="all">All Status</option>
             <option value="Active">Active</option>
@@ -48,45 +51,4 @@ export default function Incidents() {
       </div>
       <div className="text-sm text-gray-600">Active: {activeCount}</div>
 
-      <div className="overflow-x-auto rounded-lg border bg-white">
-        <table className="min-w-full text-sm">
-          <thead className="bg-gray-50 text-gray-600">
-            <tr>
-              <th className="text-left px-4 py-2">ID</th>
-              <th className="text-left px-4 py-2">Type</th>
-              <th className="text-left px-4 py-2">Severity</th>
-              <th className="text-left px-4 py-2">Status</th>
-              <th className="text-left px-4 py-2">Address</th>
-              <th className="text-left px-4 py-2">Reported</th>
-              <th className="text-left px-4 py-2">Units</th>
-            </tr>
-          </thead>
-          <tbody>
-            {incidents.map((i) => (
-              <tr key={i.id} className="border-t">
-                <td className="px-4 py-2">{i.id}</td>
-                <td className="px-4 py-2">{i.type}</td>
-                <td className="px-4 py-2">
-                  <span className={`px-2 py-1 rounded-full text-xs ${severityBadge(i.severity)}`}>
-                    {i.severity}
-                  </span>
-                </td>
-                <td className="px-4 py-2">{i.status}</td>
-                <td className="px-4 py-2">{i.address}</td>
-                <td className="px-4 py-2">{new Date(i.reported_at).toLocaleString()}</td>
-                <td className="px-4 py-2">{i.units_responding.join(', ')}</td>
-              </tr>
-            ))}
-            {incidents.length === 0 && (
-              <tr>
-                <td className="px-4 py-6 text-center text-gray-500" colSpan={7}>
-                  No incidents found for the selected filters.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
+      <div class

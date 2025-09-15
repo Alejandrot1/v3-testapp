@@ -4,7 +4,10 @@ import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Stats from './pages/Stats';
 import Stations from './pages/Stations';
+import StationDetails from './pages/StationDetails';
 import Incidents from './pages/Incidents';
+import IncidentDetails from './pages/IncidentDetails';
+import Report from './pages/Report';
 
 export default function App() {
   return (
@@ -15,7 +18,10 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="/stations" element={<Stations />} />
+          <Route path="/stations/:id" element={<StationDetails />} />
           <Route path="/incidents" element={<Incidents />} />
+          <Route path="/incidents/:id" element={<IncidentDetails />} />
+          <Route path="/report" element={<Report />} />
         </Routes>
       </main>
       <footer className="bg-gray-100 border-t py-4">

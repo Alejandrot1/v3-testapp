@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function StatCard({ label, value, color = 'bg-white', accent = 'text-fire.red' }) {
+export default function StatCard({ label, value, color = 'bg-white', accent = 'text-fire-red' }) {
   return (
     <div className={`rounded-lg border shadow-sm ${color}`}>
       <div className="p-4">

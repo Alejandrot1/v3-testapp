@@ -130,10 +130,20 @@ SAFE_EXTENSIONS = {
 }
 
 WHITELISTED_COMMANDS = [
-    "npm ci","npm install","pnpm install","yarn install",
-    "npm run build","npm run dev","npm run lint","npm run typecheck",
-    "vite build","tsc -v",
-    "python -m pytest -q","pytest -q",
+    # npm / pnpm / yarn
+    "npm ci", "npm install", "npm run", "npx",
+    "pnpm install", "pnpm run", "pnpm dlx",
+    "yarn install", "yarn run",
+
+    # type/lint/build tools
+    "vite build", "npx vite build",
+    "tsc -v", "npx tsc -v",
+    "eslint -v", "npx eslint -v",
+
+    # tests
+    "python -m pytest -q", "pytest -q",
+
+    # firebase hosting (optional)
     "firebase emulators:start --only hosting",
 ]
 

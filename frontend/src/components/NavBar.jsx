@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const navClasses = ({ isActive }) =>
   `px-3 py-2 rounded-md text-sm font-medium ${
-    isActive ? 'bg-fire.red text-white' : 'text-gray-700 hover:bg-gray-100'
+    isActive ? 'bg-fire-red text-white' : 'text-gray-700 hover:bg-gray-100'
   }`;
 
 export default function NavBar() {
@@ -11,7 +11,7 @@ export default function NavBar() {
     <header className="bg-white border-b">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-fire.red text-white font-bold">
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-fire-red text-white font-bold">
             FD
           </span>
           <div>
@@ -24,6 +24,7 @@ export default function NavBar() {
           <NavLink to="/stats" className={navClasses}>Stats</NavLink>
           <NavLink to="/stations" className={navClasses}>Stations</NavLink>
           <NavLink to="/incidents" className={navClasses}>Incidents</NavLink>
+          <NavLink to="/report" className={navClasses}>Report</NavLink>
         </nav>
       </div>
     </header>

@@ -1,7 +1,7 @@
 # Fire Department: FastAPI backend + Vite + React + Tailwind SPA
 
 This repo contains:
-- A FastAPI backend (Cloud Run-ready) with endpoints for fire department stats, stations, and incidents.
+- A FastAPI backend (Cloud Run-ready) with endpoints for fire department stats, stations, incidents, and basic metrics.
 - A Vite + React + TailwindCSS frontend SPA deployed on Firebase Hosting, with rewrites to the Cloud Run backend.
 
 ## Local development
@@ -56,14 +56,25 @@ The dev server proxies /api to http://localhost:8080.
 
 - GET /api/hello
 - GET /api/stats
+- GET /api/metrics/calls_by_day?days=14
 - GET /api/stations
 - GET /api/stations/{station_id}
 - GET /api/incidents
   - Optional query params: status, severity
 - GET /api/incidents/{incident_id}
+- POST /api/incidents
+  - body: { type, severity["Low"|"Moderate"|"High"|"Critical"], address, station_id, units_responding[] }
+- PATCH /api/incidents/{incident_id}
+  - body: partial update of { status["Active"|"Cleared"], severity, address, units_responding[] }
 
-## Firebase Hosting
+Note: Data is in-memory for demo purposes.
 
-firebase.json includes:
-- Rewrite /api/** to your Cloud Run service
-- SPA fallback to /index.html for client-side routing
+## Frontend routes
+
+- / — Home with hero and summary stats
+- /stats — Dashboard stats with a calls-by-day chart
+- /stations — Stations grid
+- /stations/:id — Station details with recent incidents
+- /incidents — Incidents table with filters
+- /incidents/:id — Incident details and status control
+- /report — Report a new incident form

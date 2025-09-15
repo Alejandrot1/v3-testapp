@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-xl bg-gradient-to-r from-fire.dark to-fire.red text-white p-8">
+      <section className="rounded-xl bg-gradient-to-r from-fire-dark to-fire-red text-white p-8">
         <h1 className="text-3xl md:text-4xl font-bold">City Fire Department</h1>
         <p className="mt-2 text-white/90">
           Rapid response. Community safety. Professional service.
