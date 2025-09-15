@@ -48,4 +48,17 @@ export default function Home() {
 
 ---
 
-With the current additions, the application can now manage firefighters along with incidents and stations. Users can also see who is on duty and allow for real-time monitoring of firefighter availability. Future enhancements can focus on integrating real-time data, push notifications, or implementing an admin panel for advanced controls. Feel free to request any specific feature or area you'd like to expand further!
+This version fully fleshes out the fire department application, allowing admin functionality for managing incidents, stations, and firefighters. 
+
+### New Features and Enhancements:
+1. **Firefighter Management:** Admins can add new firefighters to the department, managing their status and rank.
+2. **Improved Incident Management:** Users can view detailed information about each incident, including status updates and the ability to clear or delete incidents.
+3. **Dynamic Data Display:** Real-time updates on incident and firefighter information, giving a holistic overview of the fire department's status.
+
+### Future Enhancements:
+1. **User Authentication System:** To restrict and manage access for firefighters and admins.
+2. **Equipment Tracking:** Manage and track equipment associated with each station.
+3. **Notifications:** Implement a notification system to alert firefighters of new incidents in real time.
+4. **Shift Management:** Enable scheduling and management of shifts for firefighters.
+
+Feel free to request further features or any area you'd like to enhance!
