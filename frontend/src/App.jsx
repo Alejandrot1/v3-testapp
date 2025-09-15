@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Stats from './pages/Stats';
 import Stations from './pages/Stations';
 import Report from './pages/Report';
+import IncidentDetails from './pages/IncidentDetails';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/stats" element={<Stats />} />
           <Route path="/stations" element={<Stations />} />
           <Route path="/report" element={<Report />} />
+          <Route path="/incidents/:id" element={<IncidentDetails />} />
         </Routes>
       </main>
       <footer className="bg-gray-100 border-t py-4">
