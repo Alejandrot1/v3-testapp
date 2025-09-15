@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Fire Department API", version="1.8.0")
+app = FastAPI(title="Fire Department API", version="1.9.0")
 
 # Allow frontend dev server in local development
 app.add_middleware(
@@ -133,6 +133,18 @@ class IncidentCreate(BaseModel):
     station_id: int
     units_responding: List[str] = Field(default_factory=list)
 
+class Firefighter(BaseModel):
+    id: int
+    name: str
+    station_id: int
+    on_duty: bool
+
+# Sample fire fighter data
+FIREFIGHTERS = [
+    {"id": 1, "name": "John Doe", "station_id": 1, "on_duty": True},
+    {"id": 2, "name": "Jane Smith", "station_id": 2, "on_duty": False},
+]
+
 @app.get("/api/hello")
 async def hello():
     return {"message": "Welcome to the Fire Department API"}
@@ -144,6 +156,10 @@ async def stats():
 @app.get("/api/stations")
 async def list_stations():
     return {"stations": STATIONS}
+
+@app.get("/api/firefighters")
+async def list_firefighters():
+    return {"firefighters": FIREFIGHTERS}
 
 @app.post("/api/incidents", status_code=201)
 async def create_incident(payload: IncidentCreate):
@@ -191,7 +207,6 @@ async def update_incident(incident_id: int, payload: IncidentCreate):
     if not incident:
         raise HTTPException(status_code=404, detail="Incident not found")
     
-    # Update fields provided
     if payload.type:
         incident["type"] = payload.type
     if payload.severity:
