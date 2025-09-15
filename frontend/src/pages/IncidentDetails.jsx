@@ -7,7 +7,7 @@ export default function IncidentDetails() {
 
   useEffect(() => {
     fetch(`/api/incidents/${id}`)
-      .then((response) => {
+      .then(response => {
         if (!response.ok) throw new Error("Incident not found");
         return response.json();
       })
@@ -23,6 +23,13 @@ export default function IncidentDetails() {
       body: JSON.stringify(updatedIncident)
     });
     alert('Incident status updated!');
+  };
+
+  const handleDelete = async () => {
+    await fetch(`/api/incidents/${id}`, {
+      method: 'DELETE'
+    });
+    alert('Incident deleted successfully!');
   };
 
   if (!incident) {
@@ -42,6 +49,9 @@ export default function IncidentDetails() {
         <p><strong>Station ID:</strong> {incident.station_id}</p>
         <button onClick={handleUpdate} className="mt-4 bg-blue-600 text-white py-2 rounded">
           Mark as Cleared
+        </button>
+        <button onClick={handleDelete} className="mt-4 bg-red-600 text-white py-2 rounded">
+          Delete Incident
         </button>
       </div>
     </div>

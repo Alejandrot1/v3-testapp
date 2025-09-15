@@ -30,4 +30,18 @@ export default function Stats() {
       <section className="rounded-xl bg-gradient-to-r from-red-800 to-red-600 text-white p-8">
         <h1 className="text-3xl md:text-4xl font-bold">City Fire Department</h1>
         <p className="mt-2 text-white/90">Rapid response. Community safety. Professional service.</p>
-        <div className="mt-6 grid
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <StatCard label="Calls Today" value={stats.calls_today} />
+          <StatCard label="Calls This Month" value={stats.calls_this_month} />
+          <StatCard label="Avg Response (min)" value={stats.avg_response_time_min} />
+          <StatCard label="Active Incidents" value={stats.active_incidents} />
+        </div>
+      </section>
+
+      <section className="bg-white rounded-lg shadow-md p-4">
+        <h2 className="text-xl font-semibold mb-3">Calls Over the Last 30 Days</h2>
+        <LineChart labels={labels} values={values} />
+      </section>
+    </div>
+  );
+}

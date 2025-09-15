@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Fire Department API", version="1.6.0")
+app = FastAPI(title="Fire Department API", version="1.7.0")
 
 # Allow frontend dev server in local development
 app.add_middleware(
@@ -18,6 +18,7 @@ app.add_middleware(
 # Sample Data
 UTC = timezone.utc
 
+# Fire stations
 STATIONS = [
     {
         "id": 1,
@@ -48,6 +49,7 @@ STATIONS = [
     },
 ]
 
+# Incident records
 now = datetime.now(tz=UTC)
 INCIDENTS = [
     {
@@ -200,3 +202,13 @@ async def update_incident(incident_id: int, payload: IncidentCreate):
         incident["units_responding"] = payload.units_responding
 
     return {"incident": incident}
+
+@app.delete("/api/incidents/{incident_id}", status_code=204)
+async def delete_incident(incident_id: int):
+    global INCIDENTS
+    incident = next((i for i in INCIDENTS if i["id"] == incident_id), None)
+    if not incident:
+        raise HTTPException(status_code=404, detail="Incident not found")
+    
+    INCIDENTS = [i for i in INCIDENTS if i["id"] != incident_id]
+    return

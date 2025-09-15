@@ -205,7 +205,7 @@ def _find_gcloud_path() -> Optional[str]:
     # Common Windows install locations
     candidates = [
         Path.home() / r"AppData/Local/Google/Cloud SDK/google-cloud-sdk/bin/gcloud.cmd",
-        Path(r"C:\Program Files\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"),
+        Path(r"C:\Users\Ale\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"),
         Path(r"C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"),
     ]
     for c in candidates:
