@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Fire Department API", version="1.7.0")
+app = FastAPI(title="Fire Department API", version="1.8.0")
 
 # Allow frontend dev server in local development
 app.add_middleware(

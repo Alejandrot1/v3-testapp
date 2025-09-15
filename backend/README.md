@@ -15,4 +15,4 @@ This is a FastAPI backend service for a Fire Department application. It provides
 
 ---
 
-This structure is now complete for a fire department application, encompassing functionality to manage fire incidents and stations, and provide insights via statistics. You can continue building features as needed!
+This enhanced structure provides more features, allowing for dynamic incident management and statistics to be displayed via graphs and charts. You can continue expanding features like user roles, notifications, or reports as needed!
