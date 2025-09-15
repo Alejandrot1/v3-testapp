@@ -12,6 +12,7 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 from openai import OpenAI
+import shutil
 
 # ---------------- UTF-8 hardening (Windows safe) ----------------
 import subprocess, sys

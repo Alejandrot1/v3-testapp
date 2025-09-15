@@ -18,7 +18,7 @@ export default function LineChart({ labels, values }) {
     labels,
     datasets: [
       {
-        label: 'Calls',
+        label: 'Daily Calls',
         data: values,
         fill: true,
         borderColor: '#E11D48',
