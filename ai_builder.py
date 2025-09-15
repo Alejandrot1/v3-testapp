@@ -68,7 +68,7 @@ def run_json(args, cwd=None, shell=False):
 # ---------------------------------------------------------------
 load_dotenv()
 
-DEFAULT_MODEL = "gpt-4o-mini"
+DEFAULT_MODEL = "gpt-5"
 FILE_BLOCK_REGEX = r'---\s*file:\s*(.+?)\s*---\n(.*?)(?=(?:\n---\s*file:\s*)|\Z)'
 DIFF_BLOCK_REGEX = r'---\s*diff:\s*(.+?)\s*---\n(.*?)(?=(?:\n---\s*(?:file|diff|patch):\s*)|\Z)'
 PATCH_BLOCK_REGEX = r'---\s*patch:\s*(.+?)\s*---\n(.*?)(?=(?:\n---\s*(?:file|diff|patch):\s*)|\Z)'
@@ -261,7 +261,7 @@ class AIProjectScaffolder:
 
     # -------- model calls ----------
     def send(self, user_prompt: str, preset: Optional[str]=None, mode: str="web",
-             temperature: float=0.2, max_output_tokens: int=8000):
+            max_output_tokens: int=8000):
         msgs = self._build_messages(user_prompt, preset=preset, mode=mode)
         self.history.append(ChatTurn("user", user_prompt))
         self.save_history()
@@ -269,7 +269,6 @@ class AIProjectScaffolder:
             resp = self.client.responses.create(
                 model=self.model,
                 input=msgs,
-                temperature=temperature,
                 max_output_tokens=max_output_tokens,
             )
             output_text = resp.output_text
@@ -283,9 +282,9 @@ class AIProjectScaffolder:
             raise
 
     def apply_changes(self, instruction: str, preset: Optional[str]=None, mode: str="web",
-                      temperature: float=0.2, max_output_tokens: int=8000):
+                      max_output_tokens: int=8000):
         return self.send(instruction, preset=preset, mode=mode,
-                         temperature=temperature, max_output_tokens=max_output_tokens)
+                        max_output_tokens=max_output_tokens)
 
     # -------- file ops ----------
     def _safe_write(self, root: Path, rel_path: str, content: str):
