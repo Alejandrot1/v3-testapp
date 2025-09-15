@@ -19,6 +19,7 @@ export default function Firefighters() {
             <h3 className="text-lg font-semibold">{firefighter.name}</h3>
             <p className="text-sm text-gray-600">{firefighter.on_duty ? "On Duty" : "Off Duty"}</p>
             <p className="mt-2">Station ID: {firefighter.station_id}</p>
+            {firefighter.rank and <p className="text-sm text-gray-500">Rank: {firefighter.rank}</p>}
           </div>
         ))}
       </div>
