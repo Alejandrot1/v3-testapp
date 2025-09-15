@@ -27,6 +27,17 @@ export default function Stats() {
 
   return (
     <div className="space-y-8">
+      <section className="rounded-xl bg-gradient-to-r from-red-800 to-red-600 text-white p-8">
+        <h1 className="text-3xl md:text-4xl font-bold">City Fire Department</h1>
+        <p className="mt-2 text-white/90">Rapid response. Community safety. Professional service.</p>
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <StatCard label="Calls Today" value={stats.calls_today} />
+          <StatCard label="Calls This Month" value={stats.calls_this_month} />
+          <StatCard label="Avg Response (min)" value={stats.avg_response_time_min} />
+          <StatCard label="Active Incidents" value={stats.active_incidents} />
+        </div>
+      </section>
+
       <section className="bg-white rounded-lg shadow-md p-4">
         <h2 className="text-xl font-semibold mb-3">Calls Over the Last 30 Days</h2>
         <LineChart labels={labels} values={values} />
@@ -34,7 +45,3 @@ export default function Stats() {
     </div>
   );
 }
-
----
-
-This version builds upon your fire department application by including the ability to manage firefighters, displaying them alongside incident and station information. More features can be added, such as viewing shifts, monitoring equipment, or reporting statistics over different time frames. Feel free to continue expanding based on requirements!

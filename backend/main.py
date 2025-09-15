@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Fire Department API", version="1.11.0")
+app = FastAPI(title="Fire Department API", version="1.12.0")
 
 # Allow frontend dev server in local development
 app.add_middleware(
@@ -131,7 +131,7 @@ def compute_stats():
         1 for i in INCIDENTS if datetime.fromisoformat(i["reported_at"]) >= month_start(_now)
     )
     active_incidents = sum(1 for i in INCIDENTS if i["status"].lower() == "active")
-    avg_response_time_min = 5.7  # mock
+    avg_response_time_min = 5.7  # mock, can calculate based on data later
     firefighters_on_duty = sum(f["on_duty"] for f in FIRE_FIGHTERS)
     stations_count = len(STATIONS)
     return {

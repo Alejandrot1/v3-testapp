@@ -48,4 +48,4 @@ export default function Home() {
 
 ---
 
-This setup enhances the fire department application by adding functionality to manage firefighters. You can now also interact with them within the application, allowing reporting and displaying various statistics. Future features could involve assigning shifts, tracking certifications, and larger-scale reporting capabilities. Feel free to continue expanding or specify additional features you would like to see!
+With the current additions, the application can now manage firefighters along with incidents and stations. Users can also see who is on duty and allow for real-time monitoring of firefighter availability. Future enhancements can focus on integrating real-time data, push notifications, or implementing an admin panel for advanced controls. Feel free to request any specific feature or area you'd like to expand further!
