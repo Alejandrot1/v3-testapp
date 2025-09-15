@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, timezone
 from typing import List, Optional, Literal
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -93,10 +92,8 @@ INCIDENTS = [
     },
 ]
 
-
 def month_start(dt: datetime) -> datetime:
     return dt.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-
 
 def compute_stats():
     _now = datetime.now(tz=UTC)
@@ -120,30 +117,12 @@ def compute_stats():
         "last_updated": _now.isoformat(),
     }
 
-
 def next_incident_id() -> int:
     return (max((i["id"] for i in INCIDENTS), default=100)) + 1
-
 
 def ensure_station_exists(station_id: int):
     if not any(s["id"] == station_id for s in STATIONS):
         raise HTTPException(status_code=400, detail="Invalid station_id")
-
-
-def calls_by_day(days: int = 14):
-    _now = datetime.now(tz=UTC)
-    buckets = {}
-    for d in range(days):
-        day = (_now - timedelta(days=d)).date().isoformat()
-        buckets[day] = 0
-    for i in INCIDENTS:
-        d = datetime.fromisoformat(i["reported_at"]).date().isoformat()
-        if d in buckets:
-            buckets[d] += 1
-    # return in ascending date order
-    series = [{"date": k, "count": buckets[k]} for k in sorted(buckets.keys())]
-    return series
-
 
 class IncidentCreate(BaseModel):
     type: str
@@ -152,63 +131,17 @@ class IncidentCreate(BaseModel):
     station_id: int
     units_responding: List[str] = Field(default_factory=list)
 
-
-class IncidentUpdate(BaseModel):
-    status: Optional[Literal["Active", "Cleared"]] = None
-    severity: Optional[Literal["Low", "Moderate", "High", "Critical"]] = None
-    address: Optional[str] = None
-    units_responding: Optional[List[str]] = None
-
-
 @app.get("/api/hello")
 async def hello():
     return {"message": "Welcome to the Fire Department API"}
-
 
 @app.get("/api/stats")
 async def stats():
     return compute_stats()
 
-
-@app.get("/api/metrics/calls_by_day")
-async def metrics_calls_by_day(days: int = 14):
-    if days < 1 or days > 60:
-        raise HTTPException(status_code=400, detail="days must be between 1 and 60")
-    return {"series": calls_by_day(days)}
-
-
 @app.get("/api/stations")
 async def list_stations():
     return {"stations": STATIONS}
-
-
-@app.get("/api/stations/{station_id}")
-async def get_station(station_id: int):
-    station = next((s for s in STATIONS if s["id"] == station_id), None)
-    if not station:
-        raise HTTPException(status_code=404, detail="Station not found")
-    incidents = [i for i in INCIDENTS if i["station_id"] == station_id]
-    return {"station": station, "recent_incidents": incidents}
-
-
-@app.get("/api/incidents")
-async def list_incidents(status: Optional[str] = None, severity: Optional[str] = None):
-    data = INCIDENTS
-    if status:
-        data = [i for i in data if i["status"].lower() == status.lower()]
-    if severity:
-        data = [i for i in data if i["severity"].lower() == severity.lower()]
-    return {"incidents": data}
-
-
-@app.get("/api/incidents/{incident_id}")
-async def get_incident(incident_id: int):
-    incident = next((i for i in INCIDENTS if i["id"] == incident_id), None)
-    if not incident:
-        raise HTTPException(status_code=404, detail="Incident not found")
-    station = next((s for s in STATIONS if s["id"] == incident["station_id"]), None)
-    return {"incident": incident, "station": station}
-
 
 @app.post("/api/incidents", status_code=201)
 async def create_incident(payload: IncidentCreate):
@@ -226,20 +159,4 @@ async def create_incident(payload: IncidentCreate):
     INCIDENTS.insert(0, incident)
     return {"incident": incident}
 
-
-@app.patch("/api/incidents/{incident_id}")
-async def update_incident(incident_id: int, payload: IncidentUpdate):
-    incident = next((i for i in INCIDENTS if i["id"] == incident_id), None)
-    if not incident:
-        raise HTTPException(status_code=404, detail="Incident not found")
-
-    if payload.status is not None:
-        incident["status"] = payload.status
-    if payload.severity is not None:
-        incident["severity"] = payload.severity
-    if payload.address is not None:
-        incident["address"] = payload.address
-    if payload.units_responding is not None:
-        incident["units_responding"] = payload.units_responding
-
-    return {"incident": incident}
+# Additional incident handling and stats can be added similarly

@@ -68,7 +68,7 @@ def run_json(args, cwd=None, shell=False):
 # ---------------------------------------------------------------
 load_dotenv()
 
-DEFAULT_MODEL = "gpt-5"
+DEFAULT_MODEL = "gpt-4o-mini"
 FILE_BLOCK_REGEX = r'---\s*file:\s*(.+?)\s*---\n(.*?)(?=(?:\n---\s*file:\s*)|\Z)'
 DIFF_BLOCK_REGEX = r'---\s*diff:\s*(.+?)\s*---\n(.*?)(?=(?:\n---\s*(?:file|diff|patch):\s*)|\Z)'
 PATCH_BLOCK_REGEX = r'---\s*patch:\s*(.+?)\s*---\n(.*?)(?=(?:\n---\s*(?:file|diff|patch):\s*)|\Z)'

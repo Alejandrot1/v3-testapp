@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles */
 :root {
-  --brand: #E11D48;
+  --fire-red: #E11D48;
 }
 
 html, body, #root {
