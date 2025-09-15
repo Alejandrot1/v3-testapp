@@ -22,11 +22,9 @@ export default function Report() {
       body: JSON.stringify(formData)
     });
     if (response.ok) {
-      // Handle success
       alert('Incident reported successfully!');
       setFormData({ type: '', severity: 'Low', address: '', station_id: 1, units_responding: [] });
     } else {
-      // Handle failure
       alert('Failed to report incident.');
     }
   };
@@ -56,7 +54,7 @@ export default function Report() {
           Station ID
           <input type="number" name="station_id" value={formData.station_id} onChange={handleChange} required className="block w-full mt-1 border rounded-md h-10" />
         </label>
-        <button type="submit" className="w-full bg-fire-red text-white py-2 rounded-md">Report Incident</button>
+        <button type="submit" className="w-full bg-red-600 text-white py-2 rounded-md">Report Incident</button>
       </form>
     </div>
   );

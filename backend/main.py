@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Fire Department API", version="1.1.0")
+app = FastAPI(title="Fire Department API", version="1.2.0")
 
 # Allow frontend dev server in local development
 app.add_middleware(
@@ -159,4 +159,26 @@ async def create_incident(payload: IncidentCreate):
     INCIDENTS.insert(0, incident)
     return {"incident": incident}
 
-# Additional incident handling and stats can be added similarly
+class Incident(BaseModel):
+    id: int
+    type: str
+    severity: Literal["Low", "Moderate", "High", "Critical"]
+    status: Literal["Active", "Cleared"]
+    address: str
+    reported_at: str
+    units_responding: List[str]
+    station_id: int
+
+@app.get("/api/incidents", response_model=List[Incident])
+async def get_incidents(status: Optional[str] = None):
+    filtered_incidents = INCIDENTS
+    if status:
+        filtered_incidents = [i for i in INCIDENTS if i["status"].lower() == status.lower()]
+    return filtered_incidents
+
+@app.get("/api/incidents/{incident_id}", response_model=Incident)
+async def get_incident(incident_id: int):
+    incident = next((i for i in INCIDENTS if i["id"] == incident_id), None)
+    if not incident:
+        raise HTTPException(status_code=404, detail="Incident not found")
+    return incident

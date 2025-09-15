@@ -55,6 +55,7 @@ The dev server proxies /api to http://localhost:8080.
 - GET /api/stats
 - GET /api/stations
 - POST /api/incidents
+- GET /api/incidents
 
 ## Frontend Routes
 - / — Home with stats overview
