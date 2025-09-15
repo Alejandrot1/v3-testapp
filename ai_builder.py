@@ -189,8 +189,38 @@ def first_nonempty(*vals):
         if v: return v
     return None
 
+def _find_gcloud_path() -> Optional[str]:
+    # Try PATH first
+    for name in ("gcloud", "gcloud.cmd", "gcloud.exe"):
+        p = shutil.which(name)
+        if p:
+            return p
+
+    # Respect explicit override
+    p = os.getenv("GCLOUD_PATH")
+    if p and Path(p).exists():
+        return p
+
+    # Common Windows install locations
+    candidates = [
+        Path.home() / r"AppData/Local/Google/Cloud SDK/google-cloud-sdk/bin/gcloud.cmd",
+        Path(r"C:\Program Files\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"),
+        Path(r"C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\bin\gcloud.cmd"),
+    ]
+    for c in candidates:
+        if c.exists():
+            return str(c)
+    return None
+
 def has_gcloud() -> bool:
-    ok,_,_ = run_p(["gcloud","--version"])
+    gc = _find_gcloud_path()
+    if not gc:
+        # Optional: print a one-liner hint the first time
+        print("[provision] gcloud not found on PATH. Hint: add "
+              r"%USERPROFILE%\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin "
+              "to PATH or set GCLOUD_PATH to the full gcloud.cmd.", flush=True)
+        return False
+    ok, _, _ = run_p([gc, "--version"])
     return ok
 
 def has_firebase_cli() -> bool:
