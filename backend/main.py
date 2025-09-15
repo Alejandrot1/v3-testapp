@@ -4,7 +4,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Fire Department API", version="1.10.0")
+app = FastAPI(title="Fire Department API", version="1.11.0")
 
 # Allow frontend dev server in local development
 app.add_middleware(
@@ -46,6 +46,31 @@ STATIONS = [
         "on_duty_count": 8,
         "lat": 47.5233,
         "lng": -122.3550,
+    },
+]
+
+# Firefighter records
+FIRE_FIGHTERS = [
+    {
+        "id": 1,
+        "name": "John Doe",
+        "rank": "Captain",
+        "station_id": 1,
+        "on_duty": True,
+    },
+    {
+        "id": 2,
+        "name": "Jane Smith",
+        "rank": "Lieutenant",
+        "station_id": 2,
+        "on_duty": False,
+    },
+    {
+        "id": 3,
+        "name": "Emily Johnson",
+        "rank": "Firefighter",
+        "station_id": 3,
+        "on_duty": True,
     },
 ]
 
@@ -107,7 +132,7 @@ def compute_stats():
     )
     active_incidents = sum(1 for i in INCIDENTS if i["status"].lower() == "active")
     avg_response_time_min = 5.7  # mock
-    firefighters_on_duty = sum(s["on_duty_count"] for s in STATIONS)
+    firefighters_on_duty = sum(f["on_duty"] for f in FIRE_FIGHTERS)
     stations_count = len(STATIONS)
     return {
         "calls_today": calls_today,
@@ -136,16 +161,15 @@ class IncidentCreate(BaseModel):
 class Firefighter(BaseModel):
     id: int
     name: str
+    rank: str
     station_id: int
     on_duty: bool
-    rank: Optional[str] = None
 
-# Sample firefighter data
-FIREFIGHTERS = [
-    {"id": 1, "name": "John Doe", "station_id": 1, "on_duty": True, "rank": "Captain"},
-    {"id": 2, "name": "Jane Smith", "station_id": 2, "on_duty": False, "rank": "Lieutenant"},
-    {"id": 3, "name": "Rick Johnson", "station_id": 3, "on_duty": True, "rank": "Firefighter"},
-]
+class FirefighterCreate(BaseModel):
+    name: str
+    rank: str
+    station_id: int
+    on_duty: bool = False
 
 @app.get("/api/hello")
 async def hello():
@@ -161,7 +185,14 @@ async def list_stations():
 
 @app.get("/api/firefighters", response_model=List[Firefighter])
 async def list_firefighters():
-    return {"firefighters": FIREFIGHTERS}
+    return {"firefighters": FIRE_FIGHTERS}
+
+@app.post("/api/firefighters", status_code=201)
+async def create_firefighter(payload: FirefighterCreate):
+    new_id = max(f["id"] for f in FIRE_FIGHTERS) + 1
+    firefighter = Firefighter(id=new_id, **payload.dict())
+    FIRE_FIGHTERS.append(firefighter)
+    return {"firefighter": firefighter}
 
 @app.post("/api/incidents", status_code=201)
 async def create_incident(payload: IncidentCreate):
@@ -209,7 +240,6 @@ async def update_incident(incident_id: int, payload: IncidentCreate):
     if not incident:
         raise HTTPException(status_code=404, detail="Incident not found")
     
-    # Update fields provided
     if payload.type:
         incident["type"] = payload.type
     if payload.severity:

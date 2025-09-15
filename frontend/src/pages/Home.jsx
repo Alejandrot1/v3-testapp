@@ -44,4 +44,8 @@ export default function Home() {
       </section>
     </div>
   );
-}
+} 
+
+---
+
+This setup enhances the fire department application by adding functionality to manage firefighters. You can now also interact with them within the application, allowing reporting and displaying various statistics. Future features could involve assigning shifts, tracking certifications, and larger-scale reporting capabilities. Feel free to continue expanding or specify additional features you would like to see!
