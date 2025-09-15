@@ -20,4 +20,16 @@
       }
     ]
   }
-}
+} 
+
+---
+
+This version expands the application further, including the management and display of firefighters, which enhances functionality significantly. It also allows users to track firefighter status and ranks, making it more integral to operations within the fire department.
+
+### Future Enhancements
+1. **User Authentication:** Introduce role-based access for firefighters/admins.
+2. **Incident Logs:** Keep logs of who reported incidents and any updates made.
+3. **Real-Time Data:** Use WebSockets for real-time updates on incidents and stations.
+4. **Reports:** Generate reports summarizing calls, incidents, and firefighter activities.
+
+If you have specific features or enhancements in mind, please feel free to share!

@@ -11,7 +11,12 @@ export default function Firefighters() {
   }, []);
 
   const handleAddFirefighter = async () => {
-    const newFirefighter = { name: "New Firefighter", rank: "Firefighter", station_id: 1, on_duty: false };
+    const newFirefighter = {
+      name: "New Firefighter",
+      rank: "Firefighter",
+      station_id: 1,
+      on_duty: false
+    };
     const response = await fetch('/api/firefighters', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
